@@ -2,7 +2,7 @@
 
 Repozitář obsahuje [ESPHome](https://esphome.io/) komponentu pro AZO Digital ECO Solar Boost MPPT-3000 PRO invertor.
 
-ESP32 naslouchá na I2C sběrnici a dekóduje obsaho zobrazený na displeji.
+ESP32 naslouchá na I2C sběrnici a dekóduje obsaho zobrazený na displeji. Otestováno s verzí invertoru 5.49.
 
 ## Použití
 ESP32 module se připojí na LCD modul invertoru.
