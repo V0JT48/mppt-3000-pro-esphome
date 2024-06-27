@@ -9,10 +9,22 @@ ESP32 module se připojí na LCD modul invertoru.
  - GND na GND
  - SDA pin na nakonfigurovaný GPIO pin, default 21
  - SCL pin na nakonfigurovaný GPIO pin, default 22
- - datové piny musí být připojeny přes 1K rezistor nebo digitální optočlen (např. 2 kanálový VO0631T, 2x 1 kanálový 6N137-L)
+ - datové piny musí být připojeny přes 1K rezistor s diodou nebo digitální optočlen (např. 2 kanálový VO0631T, 2x 1 kanálový 6N137-L)
  - ESP32 nelze napájet z 5V invertoru, neposkytuje dostatečný proud
  - zapnutý invertor lze detekovat optočlenem připojeným na 5V napájení LCD, přidat do konfigurace `binary_sensor gpio`
-
+```
+  ___ ESP23 GPIOx
+   |
+  _|_
+ _\_/_  1N4148
+   |
+  _|_
+ |1K |
+ |   |
+ |_ _|
+   |
+  _|_ LCD SCL/SDA
+```
 ![Diagram](./img/MPPT3000-LCD-wire.jpg)
 
 Soubor `mppt3000.yaml` obsahuje vzorovou konfiguraci ESPHome.
