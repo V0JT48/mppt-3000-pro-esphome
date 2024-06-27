@@ -24,7 +24,7 @@ Connect ESP32 to LCD module side of the inverter.
  |   |
  |_ _|
    |
-  _|_ LCD SCD/SDA
+  _|_ LCD SCL/SDA
 ```
 
 ![Diagram](./img/MPPT3000-LCD-wire.jpg)
