@@ -30,6 +30,7 @@ Connect ESP32 to LCD module side of the inverter.
 ![Diagram](./img/MPPT3000-LCD-wire.jpg)
 
 File `mppt3000.yaml` contains example ESPHome configuration.
+ - Component is not compatible with regular `i2c` bus configuration
  - Default `update_interval` is 30 seconds as inverter reports all values every +/-20 seconds
  - Timeout filter is recommended for non incremental values
  - Data aquisition may get stuck, node may be rebooted using configured restart switch
