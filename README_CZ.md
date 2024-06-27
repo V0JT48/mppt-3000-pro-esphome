@@ -28,6 +28,7 @@ ESP32 module se připojí na LCD modul invertoru.
 ![Diagram](./img/MPPT3000-LCD-wire.jpg)
 
 Soubor `mppt3000.yaml` obsahuje vzorovou konfiguraci ESPHome.
+ - komponenta není kompatibilní s konfigurací `i2c` sběrnice
  - výchozí `update_interval` je 30 sekund, jelikož invertor zobrazuje veškerá data zhruba každých 20 sekund
  - je doporučeno nastavit timeout filter na neinkrementalní veličiny
  - odposlech se občas může zaseknout, ESP32 lze vzdáleně nebo automatizovaně restartovat nakonfigurovanou komponentou restart switch
