@@ -1,0 +1,59 @@
+esphome:
+  name: mppt3000
+  friendly_name: mppt3000
+  libraries:
+    - Wire
+
+external_components:
+  - source: github://V0JT48/mppt-3000-pro-esphome
+    components: ["mppt3000pro"]
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+
+web_server:
+  port: 80
+
+switch:
+  - platform: restart
+    name: "MPPT3000 Restart"
+
+
+sensor:
+  - platform: mppt3000pro
+    sda: GPIO13
+    scl: GPIO14
+    voltage:
+      name: MPPT3000_V
+      filters:
+        - timeout:
+            timeout: 120s
+            value: 0
+    current:
+      name: MPPT3000_A
+      filters:
+        - timeout:
+            timeout: 120s
+            value: 0
+    power:
+      name: MPPT3000_W
+      filters:
+        - timeout:
+            timeout: 120s
+            value: 0
+    energy_day:
+      name: MPPT3000
+    energy_total:
+      name: MPPT3000_T
+    output:
+      name: MPPT3000_O
+      filters:
+        - timeout:
+            timeout: 120s
+            value: 1
