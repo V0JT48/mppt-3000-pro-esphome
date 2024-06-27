@@ -3,7 +3,7 @@
 This repository contains a component for [ESPHome](https://esphome.io/)
 to support the AZO Digital ECO Solar Boost MPPT-3000 PRO inverter.
 
-ESP32 acts as I2C bus sniffer and decodes messages displayed on inverter LCD.
+ESP32 acts as I2C bus sniffer and decodes messages displayed on inverter LCD. Tested with inverter version 5.49.
 
 ## Usage
 Connect ESP32 to LCD module side of the inverter.
