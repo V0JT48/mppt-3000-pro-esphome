@@ -14,7 +14,7 @@ Connect ESP32 to LCD module side of the inverter.
  - Use external power supply for ESP32, inverter does not provide enough 5V power
  - Additional optocoupler connected to 5V supply may be used to detect if inverter is on, `binary_sensor gpio`
 ```
-  ___ ESP23 GPIOx
+  ___ ESP32 GPIOx
    |
   _|_
  _\_/_  1N4148
