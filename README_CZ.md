@@ -13,7 +13,7 @@ ESP32 module se připojí na LCD modul invertoru.
  - ESP32 nelze napájet z 5V invertoru, neposkytuje dostatečný proud
  - zapnutý invertor lze detekovat optočlenem připojeným na 5V napájení LCD, přidat do konfigurace `binary_sensor gpio`
 ```
-  ___ ESP23 GPIOx
+  ___ ESP32 GPIOx
    |
   _|_
  _\_/_  1N4148
@@ -33,3 +33,14 @@ Soubor `mppt3000.yaml` obsahuje vzorovou konfiguraci ESPHome.
  - je doporučeno nastavit timeout filter na neinkrementalní veličiny
  - odposlech se občas může zaseknout, ESP32 lze vzdáleně nebo automatizovaně restartovat nakonfigurovanou komponentou restart switch
  - v konfiguraci lze využít odkaz na Github nebo zkopírovat adresář `components` do úložiště ESPHome a nastavit `- source: components`
+
+## Mapování pinů LCD desky PCF8574A na HD44780
+LCD driver je ovládán ve 4-bitovém režimu přes I2C expandér. Invertor očekává PCF8574 na adrese 0x27 nebo PCF8574A na adrese 0x3F.
+ - P0 - RS
+ - P1 - R/W
+ - P2 - E
+ - P3 - nezapojeno, vždy 1
+ - P4 - DB4
+ - P5 - DB5
+ - P6 - DB6
+ - P7 - DB7
