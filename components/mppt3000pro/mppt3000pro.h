@@ -18,6 +18,7 @@ class MPPT3000PRO : public sensor::Sensor, public PollingComponent {
     void set_sensor_O(sensor::Sensor *sensor_O) { sensor_O_ = sensor_O; }
     void set_sda_pin(uint8_t sda_pin) { sda_pin_ = sda_pin; }
     void set_scl_pin(uint8_t scl_pin) { scl_pin_ = scl_pin; }
+    void set_address(uint16_t address) { address_ = address; }
 
     void setup() override;
     void loop() override;
@@ -34,6 +35,7 @@ class MPPT3000PRO : public sensor::Sensor, public PollingComponent {
     sensor::Sensor *sensor_O_;
     uint8_t sda_pin_;
     uint8_t scl_pin_;
+    uint16_t address_;
 };
 
 } //namespace mppt3000pro
