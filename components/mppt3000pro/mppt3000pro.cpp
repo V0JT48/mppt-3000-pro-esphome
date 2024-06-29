@@ -4,7 +4,6 @@
 namespace esphome {
 namespace mppt3000pro {
 
-const uint16_t I2C_ADDRESS = 0x3F; // listen for data addressed to LCD I2C expander
 const uint8_t DEFAULT_OUTPUT = 1;
 
 bool new_data = false;
@@ -136,7 +135,7 @@ void MPPT3000PRO::setup() {
   if (sda_pin_ != scl_pin_) {
     Wire.setPins(sda_pin_, scl_pin_); //Default SDA (GPIO21) and SCL (GPIO22)
   }
-  Wire.begin(I2C_ADDRESS);
+  Wire.begin(address_);
   Wire.onReceive(I2C_RxHandler);
   ESP_LOGI("MPPT3000", "Setup done");
 }
