@@ -8,6 +8,7 @@ from esphome.const import (
     CONF_OUTPUT,
     CONF_SDA,
     CONF_SCL,
+    CONF_ADDRESS,
     UNIT_EMPTY,
     UNIT_VOLT,
     UNIT_AMPERE,
@@ -54,6 +55,7 @@ CONFIG_SCHEMA = cv.Schema(
         ),
         cv.Optional(CONF_SCL, default="SCL"): pin_with_input_and_output_support,
         cv.Optional(CONF_SDA, default="SDA"): pin_with_input_and_output_support,
+        cv.Optional(CONF_ADDRESS, default=0x3F): cv.one_of(0x3F, 0x27, int=True),
     }
 ).extend(cv.polling_component_schema("30s"))
 
@@ -88,3 +90,4 @@ async def to_code(config):
 
     cg.add(var.set_sda_pin(config[CONF_SDA]))
     cg.add(var.set_scl_pin(config[CONF_SCL]))
+    cg.add(var.set_address(config[CONF_ADDRESS]))
