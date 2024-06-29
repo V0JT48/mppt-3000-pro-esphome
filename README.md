@@ -35,3 +35,14 @@ File `mppt3000.yaml` contains example ESPHome configuration.
  - Timeout filter is recommended for non incremental values
  - Data aquisition may get stuck, node may be rebooted using configured restart switch
  - Either use github link or copy `components` files to `esphome` local storage and set `- source: components`
+
+## LCD board PCF8574A pin mapping to HD44780
+LCD driver is controlled in 4-bit mode via I2C expander. Inverter is expecting PCF8574 address 0x27 or PCF8574A address 0x3F.
+ - P0 - RS
+ - P1 - R/W
+ - P2 - E
+ - P3 - not connected, always High
+ - P4 - DB4
+ - P5 - DB5
+ - P6 - DB6
+ - P7 - DB7
