@@ -14,7 +14,8 @@ from esphome.const import (
     UNIT_AMPERE,
     UNIT_WATT,
     UNIT_KILOWATT_HOURS,
-  )
+    PLATFORM_ESP32,
+    )
 
 mppt3000pro_ns = cg.esphome_ns.namespace("mppt3000pro")
 MPPT3000PRO = mppt3000pro_ns.class_(
@@ -32,32 +33,36 @@ pin_with_input_and_output_support = pins.internal_gpio_pin_number(
     {CONF_OUTPUT: True, CONF_INPUT: True}
 )
 
-CONFIG_SCHEMA = cv.Schema(
-    {
-        cv.GenerateID(): cv.declare_id(MPPT3000PRO),
-        cv.Optional(CONF_SENSOR_V): sensor.sensor_schema(
-            unit_of_measurement=UNIT_VOLT, icon="mdi:lightning-bolt", accuracy_decimals=0
-        ),
-        cv.Optional(CONF_SENSOR_A): sensor.sensor_schema(
-            unit_of_measurement=UNIT_AMPERE, icon="mdi:lightning-bolt", accuracy_decimals=1
-        ),
-        cv.Optional(CONF_SENSOR_W): sensor.sensor_schema(
-            unit_of_measurement=UNIT_WATT, icon="mdi:lightning-bolt", accuracy_decimals=0
-        ),
-        cv.Optional(CONF_SENSOR_D): sensor.sensor_schema(
-            unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=1
-        ),
-        cv.Optional(CONF_SENSOR_T): sensor.sensor_schema(
-            unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=0
-        ),
-        cv.Optional(CONF_SENSOR_O): sensor.sensor_schema(
-            unit_of_measurement=UNIT_EMPTY, icon="mdi:power-socket-eu", accuracy_decimals=0
-        ),
-        cv.Optional(CONF_SCL, default="SCL"): pin_with_input_and_output_support,
-        cv.Optional(CONF_SDA, default="SDA"): pin_with_input_and_output_support,
-        cv.Optional(CONF_ADDRESS, default=0x3F): cv.one_of(0x3F, 0x27, int=True),
-    }
-).extend(cv.polling_component_schema("30s"))
+CONFIG_SCHEMA = cv.All(
+    cv.Schema(
+        {
+            cv.GenerateID(): cv.declare_id(MPPT3000PRO),
+            cv.Optional(CONF_SENSOR_V): sensor.sensor_schema(
+                unit_of_measurement=UNIT_VOLT, icon="mdi:lightning-bolt", accuracy_decimals=0
+            ),
+            cv.Optional(CONF_SENSOR_A): sensor.sensor_schema(
+                unit_of_measurement=UNIT_AMPERE, icon="mdi:lightning-bolt", accuracy_decimals=1
+            ),
+            cv.Optional(CONF_SENSOR_W): sensor.sensor_schema(
+                unit_of_measurement=UNIT_WATT, icon="mdi:lightning-bolt", accuracy_decimals=0
+            ),
+            cv.Optional(CONF_SENSOR_D): sensor.sensor_schema(
+                unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=1
+            ),
+            cv.Optional(CONF_SENSOR_T): sensor.sensor_schema(
+                unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=0
+            ),
+            cv.Optional(CONF_SENSOR_O): sensor.sensor_schema(
+                unit_of_measurement=UNIT_EMPTY, icon="mdi:power-socket-eu", accuracy_decimals=0
+            ),
+            cv.Optional(CONF_SCL, default="SCL"): pin_with_input_and_output_support,
+            cv.Optional(CONF_SDA, default="SDA"): pin_with_input_and_output_support,
+            cv.Optional(CONF_ADDRESS, default=0x3F): cv.one_of(0x3F, 0x27, int=True),
+        }
+    ).extend(cv.polling_component_schema("30s")),
+    cv.only_on([PLATFORM_ESP32]),
+)
+
 
 
 async def to_code(config):
