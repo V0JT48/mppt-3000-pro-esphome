@@ -35,3 +35,6 @@ LCD driver is controlled in 4-bit mode via I2C expander. Inverter is expecting P
  - P5 - DB5
  - P6 - DB6
  - P7 - DB7
+
+## Grafana
+![Grafana](./img/Grafana.JPG)
