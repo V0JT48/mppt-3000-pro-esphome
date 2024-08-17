@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import sensor
+from esphome.components import sensor, binary_sensor
 from esphome import pins
 from esphome.const import (
     CONF_ID,
@@ -28,6 +28,9 @@ CONF_SENSOR_W = "power"
 CONF_SENSOR_D = "energy_day"
 CONF_SENSOR_T = "energy_total"
 CONF_SENSOR_O = "output"
+CONF_SENSOR_N = "no_data_count"
+CONF_SENSOR_ON = "on_state"
+CONF_ON_PIN = "on_pin"
 
 pin_with_input_and_output_support = pins.internal_gpio_pin_number(
     {CONF_OUTPUT: True, CONF_INPUT: True}
@@ -47,17 +50,22 @@ CONFIG_SCHEMA = cv.All(
                 unit_of_measurement=UNIT_WATT, icon="mdi:lightning-bolt", accuracy_decimals=0
             ),
             cv.Optional(CONF_SENSOR_D): sensor.sensor_schema(
-                unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=1
+                unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=1, device_class="energy", state_class="total_increasing"
             ),
             cv.Optional(CONF_SENSOR_T): sensor.sensor_schema(
-                unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=0
+                unit_of_measurement=UNIT_KILOWATT_HOURS, icon="mdi:lightning-bolt", accuracy_decimals=0, device_class="energy", state_class="total_increasing"
             ),
             cv.Optional(CONF_SENSOR_O): sensor.sensor_schema(
                 unit_of_measurement=UNIT_EMPTY, icon="mdi:power-socket-eu", accuracy_decimals=0
             ),
+            cv.Optional(CONF_SENSOR_N): sensor.sensor_schema(
+                unit_of_measurement=UNIT_EMPTY, accuracy_decimals=0
+            ),
+            cv.Optional(CONF_SENSOR_ON): binary_sensor.binary_sensor_schema(),
             cv.Optional(CONF_SCL, default="SCL"): pin_with_input_and_output_support,
             cv.Optional(CONF_SDA, default="SDA"): pin_with_input_and_output_support,
             cv.Optional(CONF_ADDRESS, default=0x3F): cv.one_of(0x3F, 0x27, int=True),
+            cv.Optional(CONF_ON_PIN): pins.gpio_input_pullup_pin_schema,
         }
     ).extend(cv.polling_component_schema("30s")),
     cv.only_on([PLATFORM_ESP32]),
@@ -93,6 +101,17 @@ async def to_code(config):
         sens = await sensor.new_sensor(sensor_O_config)
         cg.add(var.set_sensor_O(sens))
 
+    if sensor_N_config := config.get(CONF_SENSOR_N):
+        sens = await sensor.new_sensor(sensor_N_config)
+        cg.add(var.set_sensor_N(sens))
+
+    if sensor_ON_config := config.get(CONF_SENSOR_ON):
+        sens = await binary_sensor.new_binary_sensor(sensor_ON_config)
+        cg.add(var.set_sensor_ON(sens))
+
     cg.add(var.set_sda_pin(config[CONF_SDA]))
     cg.add(var.set_scl_pin(config[CONF_SCL]))
     cg.add(var.set_address(config[CONF_ADDRESS]))
+    if CONF_ON_PIN in config:
+        pin_on = await cg.gpio_pin_expression(config[CONF_ON_PIN])
+        cg.add(var.set_on_pin(pin_on))
