@@ -13,19 +13,8 @@ Connect ESP32 to LCD module side of the inverter.
  - use 1K series resistor with diode or high speed opto coupler to connect data pins (e.g. 2ch VO0631T, 2x 1ch 6N137-L)
  - Use external power supply for ESP32, inverter does not provide enough 5V power
  - Additional optocoupler connected to 5V supply may be used to detect if inverter is on, `binary_sensor gpio`
-```
-  ___ ESP32 GPIOx
-   |
-  _|_
- _\_/_  1N4148
-   |
-  _|_
- |1K |
- |   |
- |_ _|
-   |
-  _|_ LCD SCL/SDA
-```
+
+![Schematic](./img/Schematic_MPPT3k.png)
 
 ![Diagram](./img/MPPT3000-LCD-wire.jpg)
 
