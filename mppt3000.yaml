@@ -32,6 +32,9 @@ sensor:
   - platform: mppt3000pro
     sda: GPIO13
     scl: GPIO14
+    on_pin:
+      number: GPIO27
+      inverted: True
     voltage:
       name: MPPT3000_V
       filters:
@@ -60,3 +63,10 @@ sensor:
         - timeout:
             timeout: 120s
             value: 1
+    no_data_count:
+      name: MPPT3000_no_data_count
+    on_state:
+      name: MPPT3000_on
+      id: "MPPT3k_on"
+
+binary_sensor: # mandatory for 'on_state' sensor
