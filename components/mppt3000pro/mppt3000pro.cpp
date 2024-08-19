@@ -158,6 +158,17 @@ void MPPT3000PRO::setup() {
   if (this->on_pin_ != nullptr) {
     this->on_pin_->setup();
   }
+  // Fill medians with initial zeroes
+  med_V.AddValue(0);
+  med_V.AddValue(0);
+  med_A.AddValue(0);
+  med_A.AddValue(0);
+  med_W.AddValue(0);
+  med_W.AddValue(0);
+  med_D.AddValue(0);
+  med_D.AddValue(0);
+  med_T.AddValue(0);
+  med_T.AddValue(0);
   ESP_LOGI("MPPT3000", "Setup done");
 }
 
@@ -171,15 +182,15 @@ void MPPT3000PRO::update() {
     this->sensor_ON_->publish_state(on_state);
   }
   if(new_data){
-    if (this->sensor_V_ != nullptr)
+    if (this->sensor_V_ != nullptr && V < 400)
       this->sensor_V_->publish_state(V);
-    if (this->sensor_A_ != nullptr)
+    if (this->sensor_A_ != nullptr && A < 200)
       this->sensor_A_->publish_state(A/10.0);
-    if (this->sensor_W_ != nullptr)
+    if (this->sensor_W_ != nullptr  && W < 4000)
       this->sensor_W_->publish_state(W);
-    if (this->sensor_D_ != nullptr)
+    if (this->sensor_D_ != nullptr && D < 600)
       this->sensor_D_->publish_state(D/10.0);
-    if (this->sensor_T_ != nullptr)
+    if (this->sensor_T_ != nullptr && T > 0)
       this->sensor_T_->publish_state(T);
     if (this->sensor_O_ != nullptr)
       this->sensor_O_->publish_state(O);
@@ -205,7 +216,6 @@ void MPPT3000PRO::dump_config() {
     ESP_LOGCONFIG(TAG, "MPPT-3000PRO");
     ESP_LOGCONFIG(TAG, "  SDA Pin: GPIO%u", this->sda_pin_);
     ESP_LOGCONFIG(TAG, "  SCL Pin: GPIO%u", this->scl_pin_);
-    //ESP_LOGCONFIG(TAG, "  ON Pin: GPIO%u", this->on_pin_);
     LOG_PIN("  ON Pin: ", this->on_pin_);
 }
 
