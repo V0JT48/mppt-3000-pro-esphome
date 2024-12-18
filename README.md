@@ -10,7 +10,7 @@ Connect ESP32 to LCD module side of the inverter.
  - GND to GND
  - SDA data pin to configured GPIO, default 21
  - SCL data pin to configured GPIO, default 22
- - use 1K series resistor with diode or high speed opto coupler to connect data pins (e.g. 2ch VO0631T, 2x 1ch 6N137-L)
+ - use 1K series resistor with diode or high speed digital isolator (e.g. 2ch CA-IS3720)
  - Use external power supply for ESP32, inverter does not provide enough 5V power
  - Additional optocoupler connected to 5V supply may be used to detect if inverter is on, `binary_sensor gpio`
 
