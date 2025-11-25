@@ -25,7 +25,8 @@ Rychlé a levné připojení
 
 Soubor `mppt3000.yaml` obsahuje vzorovou konfiguraci ESPHome.
  - komponenta není kompatibilní s konfigurací `i2c` sběrnice
- - výchozí `update_interval` je 30 sekund, jelikož invertor zobrazuje veškerá data zhruba každých 20 sekund
+ - výchozí `update_interval` je 60 sekund, jelikož invertor zobrazuje veškerá data zhruba každých 20 sekund
+ - posílá se medián 3 hodnot pro potlačení chybných dat
  - je doporučeno nastavit timeout filter na neinkrementalní veličiny
  - odposlech se občas může zaseknout, ESP32 lze vzdáleně nebo automatizovaně restartovat nakonfigurovanou komponentou restart switch
  - v konfiguraci lze využít odkaz na Github nebo zkopírovat adresář `components` do úložiště ESPHome a nastavit `- source: components`
