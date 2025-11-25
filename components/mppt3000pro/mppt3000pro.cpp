@@ -29,7 +29,8 @@ uint16_t tmp_V = 0;
 uint16_t tmp_A = 0;
 uint16_t tmp_W = 0;
 uint16_t tmp_D = 0;
-//uint16_t chck_D = 0;
+uint8_t zero_D_count = 0;
+uint8_t boot_D_count = 0;
 uint16_t tmp_T = 0;
 uint8_t  tmp_O = DEFAULT_OUTPUT;
 
@@ -43,9 +44,15 @@ void send_data(void){
   V = med_V.AddValue(tmp_V);
   A = med_A.AddValue(tmp_A);
   W = med_W.AddValue(tmp_W);  
-  if (tmp_D >= D || tmp_D == 0){ // additional missed character value filter
+  if (tmp_D >= D ){ // additional missed character value filter
     D = med_D.AddValue(tmp_D);
-    //chck_D = tmp_D;
+    zero_D_count = 0;
+  } else if (tmp_D == 0){
+    zero_D_count++;
+    if(zero_D_count > 5){
+      D = med_D.AddValue(tmp_D);
+    }
+    ESP_LOGI("MPPT3000", "D zero counter: %d", zero_D_count);
   }
   if (tmp_T >= T ){ // additional missed character value filter
     T = med_T.AddValue(tmp_T);
@@ -63,7 +70,7 @@ void decode_character(void){
     else if(prev_char_num){
       switch (character){
         case 'V':
-          if (number > 400) break; // upper limit
+          if (number > 400 || number < 40) break; // upper and lower limit
           tmp_V=number; 
           break;
         case 'A':
@@ -79,7 +86,12 @@ void decode_character(void){
             case 'D':
               if (number > 600) break; // upper limit
               tmp_D = number;
-              new_data = true; // mark data valid after D value is received to avoid mid day reset in case of node reboot
+              if (boot_D_count > 1) {
+                new_data = true; // mark data valid after D value is received to avoid mid day reset in case of node reboot
+              } else {
+                boot_D_count++;
+              }
+              
               break;
             case 'T':
               tmp_T = number;
@@ -209,7 +221,7 @@ void MPPT3000PRO::update() {
     }
   }
   if (this->sensor_N_ != nullptr)
-    this->sensor_N_->publish_state(no_data_count);
+    this->sensor_N_->publish_state(zero_D_count);
 }
 
 void MPPT3000PRO::dump_config() {
