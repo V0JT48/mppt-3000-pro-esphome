@@ -4,8 +4,6 @@ from esphome.components import sensor, binary_sensor
 from esphome import pins
 from esphome.const import (
     CONF_ID,
-    CONF_INPUT,
-    CONF_OUTPUT,
     CONF_SDA,
     CONF_SCL,
     CONF_ADDRESS,
@@ -32,9 +30,6 @@ CONF_SENSOR_N = "no_data_count"
 CONF_SENSOR_ON = "on_state"
 CONF_ON_PIN = "on_pin"
 
-pin_with_input_and_output_support = pins.internal_gpio_pin_number(
-    {CONF_OUTPUT: True, CONF_INPUT: True}
-)
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema(
@@ -62,12 +57,12 @@ CONFIG_SCHEMA = cv.All(
                 unit_of_measurement=UNIT_EMPTY, accuracy_decimals=0
             ),
             cv.Optional(CONF_SENSOR_ON): binary_sensor.binary_sensor_schema(),
-            cv.Optional(CONF_SCL, default="SCL"): pin_with_input_and_output_support,
-            cv.Optional(CONF_SDA, default="SDA"): pin_with_input_and_output_support,
+            cv.Optional(CONF_SCL, default="SCL"): pins.internal_gpio_pin_number,
+            cv.Optional(CONF_SDA, default="SDA"): pins.internal_gpio_pin_number,
             cv.Optional(CONF_ADDRESS, default=0x3F): cv.one_of(0x3F, 0x27, int=True),
             cv.Optional(CONF_ON_PIN): pins.gpio_input_pullup_pin_schema,
         }
-    ).extend(cv.polling_component_schema("30s")),
+    ).extend(cv.polling_component_schema("60s")),
     cv.only_on([PLATFORM_ESP32]),
 )
 
